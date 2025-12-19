@@ -19,7 +19,7 @@ function Welcome() {
           and oh-so tasty!
         </p>
         <button onClick={()=> navigate('/home')}
-        className="bg-orange-400 hover:bg-orange-500 text-white w-100 py-3 px-6 rounded-xl font-semibold shadow-md ">
+        className="bg-orange-400 hover:bg-orange-500 text-white w-50 py-3 px-6 rounded-xl font-semibold shadow-md ">
           Explore Menu
         </button>
 

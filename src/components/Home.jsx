@@ -69,7 +69,7 @@ const SIZE_MULTIPLIER = {
   M: 2,
   L: 3,
 };
- 
+
 function Home() {
   const [active, setActive] = useState("today");
   const [orderItems, setOrderItems] = useState([]);
@@ -81,10 +81,10 @@ function Home() {
   const [selectedSizes, setSelectedSizes] = useState({});
 
   const getCalculatedPrice = (dish) => {
-  const size = selectedSizes[dish.name] || "S"; // default S
-  const multiplier = SIZE_MULTIPLIER[size];
-  return (dish.priceValue * multiplier).toFixed(2);
-};
+    const size = selectedSizes[dish.name] || "S"; // default S
+    const multiplier = SIZE_MULTIPLIER[size];
+    return (dish.priceValue * multiplier).toFixed(2);
+  };
 
 
 
@@ -96,21 +96,23 @@ function Home() {
 
 
 
-  const handleDelete = (name) => {
-    setOrderItems(prev =>
-      prev.filter(item => item.name !== name)
+  const handleDelete = (name, size) => {
+    setOrderItems((prev) =>
+      prev.filter((item) => !(item.name === name && item.size === size))
     );
-    setAddedItems((prev) =>
-      prev.filter((itemName) => itemName !== name)
-    );
+     
+
   };
+
 
   const handleAdd = (dish) => {
     const size = selectedSizes[dish.name] || "S";
     const multiplier = SIZE_MULTIPLIER[size];
     const finalPrice = dish.priceValue * multiplier;
     setOrderItems((prev) => {
-      const existing = prev.find(item => item.name === dish.name);
+      const existing = prev.find(
+        (item) => item.name === dish.name && item.size === size
+      );
 
       if (existing) {
         return prev.map(item =>
@@ -149,6 +151,10 @@ function Home() {
     }));
   };
 
+const cartCount = orderItems.reduce(
+  (total, item) => total + item.qty,
+  0
+);
 
 
 
@@ -156,7 +162,7 @@ function Home() {
     <div className="w-full h-screen bg-gray-800 text-white p">
 
       <div className="flex flex-col lg:flex-row bg-gray-800">
-        <div className="hidden lg:block">
+        <div >
           <Sidebar />
         </div>
 
@@ -245,8 +251,13 @@ function Home() {
                     )}
                   </div>
 
-                  <button onClick={() => setShowOrder(true)} className="bg-amber-500 border border-gray-700 px-6 py-1 rounded-lg text-white">
+                  <button onClick={() => setShowOrder(true)} className="relative bg-amber-500 border border-gray-700 px-6 py-1 rounded-lg text-white">
                     <ShoppingCart />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-2 -left-2 min-w-[18px] h-[18px] px-1 bg-red-500 text-white text-xs flex items-center justify-center rounded-full">
+                        {cartCount}
+                      </span>
+                    )}
                   </button>
                 </div>
 
@@ -259,63 +270,63 @@ function Home() {
               )}
               <div className="grid grid-cols-2 md:grid-cols-2 py-10 lg:grid-cols-3 gap-12 pb-10">
                 {filteredDishes.map((item, index) => (
-                 
-                <div
-                  key={index}
-                  className="bg-gray-900 rounded-3xl p-4 flex flex-col items-center">
-                  <img src={item.img} className="w-28 h-28 rounded-full object-cover -mt-12 mb-4" />
 
-                  <p className="text-sm text-center font-semibold">
-                    {item.name}
-                  </p>
+                  <div
+                    key={index}
+                    className="bg-gray-900 rounded-3xl p-4 flex flex-col items-center">
+                    <img src={item.img} className="w-28 h-28 rounded-full object-cover -mt-12 mb-4" />
 
-                  {item.oldPrice ? (
-                    <div className="flex gap-2 text-xs mt-1">
-                      <span className="line-through text-red-400">
-                        {item.oldPrice}
-                      </span>
-                      <span className="text-green-400">
-                        {getCalculatedPrice(item)}
+                    <p className="text-sm text-center font-semibold">
+                      {item.name}
+                    </p>
 
-                      </span>
-                    </div>
-                  ) : (
-                    <p className="text-sm mt-1">{getCalculatedPrice(item)}
-</p>
-                  )}
+                    {item.oldPrice ? (
+                      <div className="flex gap-2 text-xs mt-1">
+                        <span className="line-through text-red-400">
+                          {item.oldPrice}
+                        </span>
+                        <span className="text-green-400">
+                          {getCalculatedPrice(item)} AED
 
-                  <p className="text-xs text-gray-400 mt-1">
-                    {item.bowls}
-                  </p>
-                  <div className="flex justify-center gap-2 mt-2">
-                    {item.sizes.map((s, index) => {
-                      const isSelected = selectedSizes[item.name] === s;
+                        </span>
+                      </div>
+                    ) : (
+                      <p className="text-sm mt-1">{getCalculatedPrice(item)} AED
+                      </p>
+                    )}
 
-                      return (
-                        <button
-                          key={index}
-                          onClick={() => handleSizeSelect(item.name, s)}
-                          className={`text-sm px-3 py-1 rounded-md border transition-all
+                    <p className="text-xs text-gray-400 mt-1">
+                      {item.bowls}
+                    </p>
+                    <div className="flex justify-center gap-2 mt-2">
+                      {item.sizes.map((s, index) => {
+                        const isSelected = selectedSizes[item.name] === s;
+
+                        return (
+                          <button
+                            key={index}
+                            onClick={() => handleSizeSelect(item.name, s)}
+                            className={`text-sm px-3 py-1 rounded-md border transition-all
                             ${isSelected
-                              ? "bg-amber-500 text-white border-amber-500"
-                              : "border-gray-400 text-white hover:bg-gray-700"}`}>
-                          {s}
-                        </button>
-                      );
-                    })}
+                                ? "bg-amber-500 text-white border-amber-500"
+                                : "border-gray-400 text-white hover:bg-gray-700"}`}>
+                            {s}
+                          </button>
+                        );
+                      })}
 
 
+                    </div>
+                    <div className="flex justify-center mt-4">
+                      <button onClick={() => { handleAdd(item); setShowOrder(true); }}
+                        className={`justify-center text-lg rounded-xl px-10 py-1 transition-all ${addedItems.includes(item.name)
+                          ? "bg-green-500 text-white"
+                          : "bg-amber-500 text-white hover:bg-amber-600"}`}>
+                        {addedItems.includes(item.name) ? "Added" : "Add"}
+                      </button>
+
+                    </div>
                   </div>
-                  <div className="flex justify-center mt-4">
-                    <button onClick={() => { handleAdd(item); setShowOrder(true); }}
-                      className={`justify-center text-lg rounded-xl px-10 py-1 transition-all ${addedItems.includes(item.name)
-                        ? "bg-green-500 text-white"
-                        : "bg-amber-500 text-white hover:bg-amber-600"}`}>
-                      {addedItems.includes(item.name) ? "Added" : "Add"}
-                    </button>
-
-                  </div>
-                </div>
                 ))}
               </div>
             </div>
