@@ -53,53 +53,53 @@ function Sidebar() {
   const [active, setActive] = useState("home");
 
   const menu = [
-    { id: "home", icon: <GrHomeRounded /> },
+    { id: "home", icon: <GrHomeRounded />, path: "/home" },
     { id: "discount", icon: <CiDiscount1 /> },
     { id: "fav", icon: <RiHeart3Line /> },
     { id: "mail", icon: <IoMailOutline /> },
     { id: "notify", icon: <IoNotificationsOutline /> },
   ];
   const btnClass = (id) =>
-  `relative w-14 h-14 flex items-center justify-center z-10
-   transition-all duration-300
-   ${
-     active === id
-       ? "bg-[#F99147] text-white rounded-2xl"
-       : "text-[#F99147]"
-   }`;
+    `relative w-14 h-14 flex  items-center justify-center z-10
+   transition-all duration-300 
+   ${active === id
+      ? "bg-[#F99147] text-white rounded-2xl "
+      : "text-[#F99147] hover:bg-white/10 rounded-2xl"
+    }`;
 
 
 
 
   return (
     <>
-      <div className="relative w-25 h-screen bg-[#1F1D2B] flex flex-col items-center py-6">
-
-        <nav className='flex justify-between items-center flex-col w-20   text-white'>
+      <div className="fixed bottom-0 left-0 z-50 w-full h-20 bg-gray-900 flex items-center justify-center lg:static lg:w-25 lg:h-screen lg:flex-col lg:py-6">
+        <nav className="flex items-center justify-around w-full text-white lg:flex-col lg:w-full lg:justify-between">
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12 bg-amber-500/10 backdrop-blur rounded-xl flex items-center justify-center mt-5">
+            <div className="hidden lg:flex w-12 h-12 bg-amber-500/10 backdrop-blur rounded-xl items-center justify-center mt-5">
               <img src={logo} alt="logo" className="w-6 h-6" />
             </div>
-
-            <ul className="flex flex-col items-center space-y-12 mt-10">
+            <ul className="flex items-center gap-1 lg:flex-col lg:space-y-12 lg:gap-0 lg:mt-10">
               {menu.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => setActive(item.id)}
-                  className={btnClass(item.id)}
-                >
+                  onClick={() => {
+                    setActive(item.id);
+                    navigate(item.path);
+                  }}
+                  className={btnClass(item.id)}>
                   {active === item.id && (
-                    <div className="absolute inset-0 -z-10 flex items-center">
+                    <div className="hidden lg:flex absolute  inset-0 -z-10  items-center">
                       <div className="absolute -left-3 w-22.5 h-18  bg-gray-800 rounded-l-2xl">
                         <div className='absolute -top-7 left-15.5  w-7 h-7 bg-gray-800'>
-                          <div className="absolute top-0 right-0 w-7 h-7 bg-[#1F1D2B] rounded-bl-full rotate-270" />
+                          <div className="absolute top-0 right-0 w-7 h-7 bg-gray-900 rounded-bl-full rotate-270" />
+                          <div className="absolute flex items-center justify-center right-5 top-16 -translate-y-1/2 w-15 h-12 bg-[#F99147] rounded-2xl z-10" />
 
                         </div>
                       </div>
                       <div className="absolute right-1  w-10 h-10  z-10">
-                        <div className="relative left-9.5 top-14 w-7 h-7 bg-gray-800">
+                        <div className="relative left-9.5 top-14 w-8 h-7 bg-gray-800">
 
-                          <div className="absolute top-0 left- w-7 h-7 bg-[#1F1D2B] rounded-bl-full rotate-180" />
+                          <div className="absolute top-0 left- w-7 h-7 bg-gray-900 rounded-bl-full rotate-180" />
                         </div>
                       </div>
 

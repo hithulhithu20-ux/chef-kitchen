@@ -88,21 +88,23 @@ import React from "react";
 import { useState } from "react";
 import { Trash } from "lucide-react";
 import { Minimize2 } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 
 
 const mode = [
   { id: 1, name: "Dine In" },
-  { id: 2, name: "Take away" },
+  { id: 2, name: "Take Away" },
   { id: 3, name: "Delivery" },
 ]
 
-function Order({ items, onDelete, onRemove, }) {
+function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, }) {
 
   const subTotal = items.reduce(
     (sum, item) => sum + item.total,
     0
   );
-  const [change, setChange] = useState(mode[0].id);
+
+  const navigate = useNavigate();
 
   return (
     <div className="bg-gray-900 w-full h-screen p-6 text-white flex flex-col">
@@ -116,8 +118,8 @@ function Order({ items, onDelete, onRemove, }) {
         {mode.map((m) => (
           <button
             key={m.id}
-            onClick={() => setChange(m.id)}
-            className={`px-6 p-2 rounded-xl border  border-gray-600 cursor-pointer transition-all duration-200 ${change === m.id ? "text-white bg-orange-400" : "text-orange-400 "}`}>
+            onClick={() => setOrderType(m.name)}
+            className={`px-6 p-2 rounded-xl border  border-gray-600 cursor-pointer transition-all duration-200 ${orderType === m.name ? "text-white bg-orange-400" : "text-orange-400 "}`}>
             {m.name}
           </button>
         ))}
@@ -138,8 +140,8 @@ function Order({ items, onDelete, onRemove, }) {
         {items.length === 0 && (
           <div className="flex  justify-center items-center w-full h-full">
             <p className="text-gray-400 text-center ">
-            No items added
-          </p>
+              No items added
+            </p>
           </div>
         )}
 
@@ -197,11 +199,18 @@ function Order({ items, onDelete, onRemove, }) {
           <p className="font-semibold"> {subTotal.toFixed(2)} AED</p>
         </div>
 
-        <button className="w-full bg-orange-500 py-3 rounded-xl text-lg font-semibold">
+        <button
+          disabled={items.length === 0}
+          onClick={onOrder}
+          className={`w-full py-3 rounded-xl text-lg font-semibold 
+  ${items.length === 0
+              ? "bg-gray-600 cursor-not-allowed"
+              : "bg-orange-500"}`}
+        >
           Order now
         </button>
-      </div>
     </div>
+    </div >
   );
 }
 

@@ -3,12 +3,15 @@ import React, { useState } from "react";
 import { Search, ChevronDown } from "lucide-react";
 import Order from "./Order";
 import Sidebar from "./Sidebar";
+import Receipt from "./Receipt";
 import { ShoppingCart } from 'lucide-react';
 
 const tabs = [
+  { id: "all", label: "All" },
   { id: "today", label: "Today Special" },
   { id: "our", label: "Our Special" },
   { id: "south", label: "South Indian Special" },
+
 ];
 
 const dishes = [
@@ -20,6 +23,7 @@ const dishes = [
     priceValue: 3.29,
     bowls: "22 Bowls available",
     sizes: ["S", "M", "L"],
+    special: ["All", "Today Special", "Our Special"],
   },
   {
     img: "/img/food2.png",
@@ -29,6 +33,7 @@ const dishes = [
     priceValue: 3.29,
     bowls: "13 Bowls available",
     sizes: ["S", "M", "L"],
+    special: ["All", "Today Special", "Our Special"],
   },
   {
     img: "/img/food3.png",
@@ -38,6 +43,7 @@ const dishes = [
     priceValue: 3.29,
     bowls: "17 Bowls available",
     sizes: ["S", "M", "L"],
+    special: ["All", "Today Special", "Our Special"],
   },
   {
     img: "/img/food4.png",
@@ -46,6 +52,7 @@ const dishes = [
     priceValue: 25.00,
     bowls: "22 Bowls available",
     sizes: ["S", "M", "L"],
+    special: ["All", "Today Special", "Our Special", "South Indian Special"],
   },
   {
     img: "/img/food5.png",
@@ -54,6 +61,7 @@ const dishes = [
     priceValue: 25.00,
     bowls: "13 Bowls available",
     sizes: ["S", "M", "L"],
+    special: ["All", "Our Special"],
   },
   {
     img: "/img/food6.png",
@@ -62,6 +70,34 @@ const dishes = [
     priceValue: 25.00,
     bowls: "17 Bowls available",
     sizes: ["S", "M", "L"],
+    special: ["All", "South Indian Special"],
+  },
+  {
+    img: "/img/food1.png",
+    name: "Spicy noodle with spinach Leaf",
+    Price: "28.00 ",
+    priceValue: 28.00,
+    bowls: "20 Bowls available",
+    sizes: ["S", "M", "L"],
+    special: ["All", "South Indian Special"],
+  },
+  {
+    img: "/img/food2.png",
+    name: "Hot spicy fried rice with omelette",
+    Price: "28.00",
+    priceValue: 28.00,
+    bowls: "18 Bowls available",
+    sizes: ["S", "M", "L"],
+    special: ["All", "Our Special", "South Indian Special"],
+  },
+  {
+    img: "/img/food5.png",
+    name: "Creamy fried rice with omelet",
+    price: "30.00",
+    priceValue: 30.00,
+    bowls: "21 Bowls available",
+    sizes: ["S", "M", "L"],
+    special: ["All", "Our Special"],
   },
 ];
 const SIZE_MULTIPLIER = {
@@ -71,28 +107,44 @@ const SIZE_MULTIPLIER = {
 };
 
 function Home() {
+  const [items, setAddedItems] = useState([]);
   const [active, setActive] = useState("today");
   const [orderItems, setOrderItems] = useState([]);
   const [showOrder, setShowOrder] = useState(false);
-  const [addedItems, setAddedItems] = useState([]);
   const [search, setSearch] = useState("");
   const [orderType, setOrderType] = useState("Dine In");
   const [showType, setShowType] = useState(false);
   const [selectedSizes, setSelectedSizes] = useState({});
+  const [showReceipt, setShowReceipt] = useState(false);
 
   const getCalculatedPrice = (dish) => {
-    const size = selectedSizes[dish.name] || "S"; // default S
+    const size = selectedSizes[dish.name] || "S";
     const multiplier = SIZE_MULTIPLIER[size];
     return (dish.priceValue * multiplier).toFixed(2);
   };
 
+  const today = new Date().toLocaleDateString("en-IN", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
 
+  const filteredDishes = dishes.filter((item) => {
+  const matchesSearch = item.name
+    .toLowerCase()
+    .includes(search.trim().toLowerCase());
 
+  const matchesTab =
+    active === "all" ||
+    item.special.includes(
+      tabs.find((tab) => tab.id === active)?.label
+    );
 
-  const filteredDishes = dishes.filter((item) =>
-    item.name.toLowerCase().includes(search.trim().toLowerCase())
-  );
+  return matchesSearch && matchesTab;
+});
+
 
 
 
@@ -100,7 +152,7 @@ function Home() {
     setOrderItems((prev) =>
       prev.filter((item) => !(item.name === name && item.size === size))
     );
-     
+
 
   };
 
@@ -116,7 +168,7 @@ function Home() {
 
       if (existing) {
         return prev.map(item =>
-          item.name === dish.name
+          item.name === dish.name && item.size === size
             ? {
               ...item,
               qty: item.qty + 1,
@@ -151,15 +203,26 @@ function Home() {
     }));
   };
 
-const cartCount = orderItems.reduce(
-  (total, item) => total + item.qty,
-  0
-);
+  const cartCount = orderItems.reduce(
+    (total, item) => total + item.qty,
+    0
+  );
+
+
+  const isSizeAdded = (dishName) => {
+    const size = selectedSizes[dishName] || "S";
+    return orderItems.some(
+      (item) => item.name === dishName && item.size === size
+    );
+  };
+
+
 
 
 
   return (
-    <div className="w-full h-screen bg-gray-800 text-white p">
+    <div className="w-full h-screen bg-gray-800 text-white p pb-20 lg:pb-0">
+
 
       <div className="flex flex-col lg:flex-row bg-gray-800">
         <div >
@@ -171,7 +234,7 @@ const cartCount = orderItems.reduce(
 
             <div>
               <h1 className="text-4xl head">Chef Kitchen</h1>
-              <p>Tuesday, 2 March 2024</p>
+              <p>{today}</p>
             </div>
 
             <div className="relative w-full sm:w-full lg:w-60">
@@ -188,32 +251,29 @@ const cartCount = orderItems.reduce(
             </div>
           </div>
 
-          <div className="flex text-white mt-4 space-x-10">
+          <div className="flex gap-6 mt-4 px-2 border-b border-gray-600">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActive(tab.id)}
-                className={`pb-1 transition-all ${active === tab.id ? "text-orange-400" : "text-white cursor-pointer"}`}>
+                className={`relative pb-3 transition-all
+        ${active === tab.id
+                    ? "text-orange-400"
+                    : "text-white"
+                  }`}
+              >
                 {tab.label}
+
+                {/* underline */}
+                {active === tab.id && (
+                  <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-6 h-[3px] bg-orange-400 rounded-full"></span>
+                )}
               </button>
             ))}
           </div>
 
-          <div className="relative w-full mt-3">
-            <div className="w-full border-b-2 border-gray-600"></div>
 
-            <div className="absolute top-0 border-b-5 border-orange-400 rounded-full transition-all"
-              style={{
-                width: "90px",
-                left:
-                  active === "today"
-                    ? "0px"
-                    : active === "our"
-                      ? "130px"
-                      : "250px",
-              }}
-            ></div>
-          </div>
+
 
           <div className=" overflow-y-auto h-145 hide-scrollbar">
             <div className="mt-6">
@@ -264,10 +324,13 @@ const cartCount = orderItems.reduce(
               </div>
 
               {filteredDishes.length === 0 && (
-                <p className="text-gray-400 text-center mt-10">
-                  No food found
-                </p>
+                <div className="flex  justify-center items-center w-full h-150 ">
+                  <p className="text-gray-400 text-center">
+                    No food found
+                  </p>
+                </div>
               )}
+
               <div className="grid grid-cols-2 md:grid-cols-2 py-10 lg:grid-cols-3 gap-12 pb-10">
                 {filteredDishes.map((item, index) => (
 
@@ -291,7 +354,7 @@ const cartCount = orderItems.reduce(
                         </span>
                       </div>
                     ) : (
-                      <p className="text-sm mt-1">{getCalculatedPrice(item)} AED
+                      <p className="text-sm text-green-400 mt-1">{getCalculatedPrice(item)} AED
                       </p>
                     )}
 
@@ -318,11 +381,11 @@ const cartCount = orderItems.reduce(
 
                     </div>
                     <div className="flex justify-center mt-4">
-                      <button onClick={() => { handleAdd(item); setShowOrder(true); }}
-                        className={`justify-center text-lg rounded-xl px-10 py-1 transition-all ${addedItems.includes(item.name)
+                      <button onClick={() => { handleAdd(item) }}
+                        className={`justify-center text-lg rounded-xl px-10 py-1 transition-all ${isSizeAdded(item.name)
                           ? "bg-green-500 text-white"
                           : "bg-amber-500 text-white hover:bg-amber-600"}`}>
-                        {addedItems.includes(item.name) ? "Added" : "Add"}
+                        {isSizeAdded(item.name) ? "Added" : "Add"}
                       </button>
 
                     </div>
@@ -335,7 +398,20 @@ const cartCount = orderItems.reduce(
         </div>
         {showOrder && (
           <div className="w-full lg:w-[35%]  ">
-            <Order items={orderItems} onDelete={handleDelete} onRemove={() => setShowOrder(false)} />
+            <Order items={orderItems}
+              orderType={orderType}
+              onDelete={handleDelete}
+              setOrderType={setOrderType}
+              onRemove={() => setShowOrder(false)}
+              onOrder={() => setShowReceipt(true)} />
+            {showReceipt && (
+              <Receipt
+                items={orderItems}
+                orderType={orderType}
+                today={today}
+                onClose={() => setShowReceipt(false)}
+              />
+            )}
           </div>
         )}
 
