@@ -126,11 +126,13 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
         ))}
       </div>
 
-      <div className="grid grid-cols-[1fr_70px_120px] font-bold mb-2 mt-3 pr-4">
-        <p>Item</p>
-        <p className="text-center">Qty</p>
-        <p className="text-right">Price</p>
-      </div>
+      <div className="grid grid-cols-[1fr_52px_90px] sm:grid-cols-[1fr_70px_120px] 
+                font-bold mb-2 mt-3 pr-2">
+  <p>Item</p>
+  <p className="text-center">Qty</p>
+  <p className="text-right">Price</p>
+</div>
+
 
 
       <div className="border-b border-gray-700 mb-4"></div>
@@ -147,7 +149,9 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
 
         {items.map((item, i) => (
           <div key={i} className="mb-4">
-            <div className="grid grid-cols-[1fr_70px_120px] items-start gap-4">
+            <div className="grid grid-cols-[1fr_52px_90px] sm:grid-cols-[1fr_70px_120px] 
+                items-start gap-3 sm:gap-4">
+
               {/* ITEM COLUMN */}
               <div className="flex items-start gap-3">
                 <img src={item.img} className="w-12 h-12 rounded-full shrink-0" />
@@ -171,9 +175,11 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
 
               {/* QTY COLUMN (FIXED WIDTH) */}
               <div className="flex justify-center">
-                <span className="bg-gray-700 min-w-11 text-center px-3 py-1 rounded-lg">
-                  {item.qty}
-                </span>
+                <span className="bg-gray-700 min-w-10 sm:min-w-11 
+                 text-center px-2 sm:px-3 py-1 rounded-lg">
+  {item.qty}
+</span>
+
               </div>
 
               {/* PRICE COLUMN (FIXED WIDTH) */}
