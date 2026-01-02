@@ -23,6 +23,7 @@ function App() {
           <Route path='/' element={<Welcome />} />
           <Route path="/home" element={<Home />} />
           <Route path='/receipt' element={<Receipt/>}/>
+          
         </Routes>
 
 

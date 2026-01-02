@@ -1,43 +1,5 @@
 
 
-
-// import React from 'react'
-// import logo from '../assets/logo.svg'
-// import { GrHomeRounded } from "react-icons/gr";
-// import { RiHeart3Line } from "react-icons/ri";
-// import { IoNotificationsOutline,IoExitOutline,IoMailOutline } from "react-icons/io5";
-
-// import { CiDiscount1 } from "react-icons/ci";
-
-// function Sidebar() {
-
-//   return (
-//     <>
-//     <div className='flex justify-center w-30 h-screen  bg-gray-900'>
-//     <nav className='flex justify-between items-center flex-col w-20   text-white'>
-//         <div className="flex flex-col items-center">
-//             <div className="w-12 h-12 bg-amber-500/10 backdrop-blur rounded-xl flex items-center justify-center mt-8">
-//               <img src={logo} alt="logo" className="w-6 h-6" />
-//             </div>
-
-//             <ul className='  flex flex-col mt-10 space-y-10 text-sm justify-between items-center'>
-//               <button><GrHomeRounded className='text-[#F99147] text-2xl hover:text-white rounded-b-sm'/></button>
-//               <button><CiDiscount1 className=' text-[#F99147] text-3xl hover:text-white '/></button>
-//               <button><RiHeart3Line className=' text-[#F99147] text-3xl hover:text-white'/></button>
-//               <button><IoMailOutline className=' text-[#F99147] text-3xl hover:text-white '/></button>
-//               <button><IoNotificationsOutline className=' text-[#F99147] text-3xl hover:text-white'/></button>
-//               <button><IoExitOutline className=' text-[#F99147] text-3xl hover:text-white mt-45 mb-12 rounded-xl' /></button>
-//             </ul>
-//           </div>
-
-//     </nav>
-//     </div>
-//     </>
-//   )
-// }
-
-// export default Sidebar
-
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';

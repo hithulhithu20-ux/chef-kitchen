@@ -6,6 +6,7 @@ import Sidebar from "./Sidebar";
 import Receipt from "./Receipt";
 import { ShoppingCart } from 'lucide-react';
 
+
 const tabs = [
   { id: "all", label: "All" },
   { id: "today", label: "Today Special" },
@@ -117,6 +118,13 @@ function Home() {
   const [selectedSizes, setSelectedSizes] = useState({});
   const [showReceipt, setShowReceipt] = useState(false);
 
+
+  const clearOrder = () => {
+    setOrderItems([]);   // clears the order list
+  };
+
+
+
   const getCalculatedPrice = (dish) => {
     const size = selectedSizes[dish.name] || "S";
     const multiplier = SIZE_MULTIPLIER[size];
@@ -132,18 +140,18 @@ function Home() {
 
 
   const filteredDishes = dishes.filter((item) => {
-  const matchesSearch = item.name
-    .toLowerCase()
-    .includes(search.trim().toLowerCase());
+    const matchesSearch = item.name
+      .toLowerCase()
+      .includes(search.trim().toLowerCase());
 
-  const matchesTab =
-    active === "all" ||
-    item.special.includes(
-      tabs.find((tab) => tab.id === active)?.label
-    );
+    const matchesTab =
+      active === "all" ||
+      item.special.includes(
+        tabs.find((tab) => tab.id === active)?.label
+      );
 
-  return matchesSearch && matchesTab;
-});
+    return matchesSearch && matchesTab;
+  });
 
 
 
@@ -221,7 +229,7 @@ function Home() {
 
 
   return (
-    <div className="w-full h-screen bg-gray-800 text-white p pb-20 lg:pb-0">
+    <div className="w-full h-screen bg-gray-800 text-white p pb-20 lg:pb-0 ">
 
 
       <div className="flex flex-col lg:flex-row bg-gray-800">
@@ -275,7 +283,7 @@ function Home() {
 
 
 
-          <div className=" overflow-y-auto h-145 hide-scrollbar">
+          <div className=" overflow-y-auto h-145 pb-12 hide-scrollbar">
             <div className="mt-6">
               <div className="flex justify-between items-center mb-4">
                 <h1 className="text-xl head">Choose Dishes</h1>
@@ -311,7 +319,7 @@ function Home() {
                     )}
                   </div>
 
-                  <button onClick={() => setShowOrder(true)} className="relative bg-amber-500 border border-gray-700 px-6 py-1 rounded-lg text-white">
+                  <button onClick={() => setShowOrder(true)} className="relative bg-amber-500 border border-gray-700 px-6 py-1 rounded-2xl text-white">
                     <ShoppingCart />
                     {cartCount > 0 && (
                       <span className="absolute -top-2 -left-2 min-w-[18px] h-[18px] px-1 bg-red-500 text-white text-xs flex items-center justify-center rounded-full">
@@ -410,8 +418,13 @@ function Home() {
                 orderType={orderType}
                 today={today}
                 onClose={() => setShowReceipt(false)}
+                onClearOrder={clearOrder}
               />
+
             )}
+
+
+
           </div>
         )}
 

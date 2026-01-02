@@ -88,7 +88,8 @@ import React from "react";
 import { useState } from "react";
 import { Trash } from "lucide-react";
 import { Minimize2 } from 'lucide-react';
-import { useNavigate } from "react-router-dom";
+
+
 
 
 const mode = [
@@ -97,17 +98,23 @@ const mode = [
   { id: 3, name: "Delivery" },
 ]
 
+
+
 function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, }) {
 
-  const subTotal = items.reduce(
-    (sum, item) => sum + item.total,
-    0
-  );
+  const subTotal = items.reduce((sum, item) => {
+    const qty = item.qty || 1;
+    const price = item.unitPrice || 0;
+    return sum + qty * price;
+  }, 0);
+   const discountRate = 0.05; // 5%
+  const discountAmount = subTotal * discountRate;
+  const finalTotal = subTotal - discountAmount;
 
-  const navigate = useNavigate();
+
 
   return (
-    <div className="bg-gray-900 w-full h-screen p-6 text-white flex flex-col">
+    <div className="bg-gray-900 w-full h-screen p-6 text-white flex flex-col lg:pb-0 pb-25">
 
 
       <div className="flex flex-row justify-between">
@@ -188,15 +195,15 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
 
       </div>
 
-      <div className="justify-end border-t border-gray-700 pt-4 mt-auto">
-        {/* <div className="flex justify-between text-gray-400 mb-5">
-          <p>Discount</p>
-          <p>5%</p>
-        </div> */}
+      <div className="justify-end border-t border-gray-700 pt-4 mt-auto ">
+        <div className="flex justify-between text-white/90 mb-4">
+          <span>Discount (5%)</span>
+          <span>-{discountAmount.toFixed(2)} AED</span>
+        </div>
 
         <div className="flex justify-between mb-4">
           <p className="text-gray-300">Sub total</p>
-          <p className="font-semibold"> {subTotal.toFixed(2)} AED</p>
+          <p className="font-semibold"> {finalTotal.toFixed(2)} AED</p>
         </div>
 
         <button
@@ -209,7 +216,8 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
         >
           Order now
         </button>
-    </div>
+        
+      </div>
     </div >
   );
 }
