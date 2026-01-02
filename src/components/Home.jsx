@@ -156,16 +156,28 @@ function Home() {
     return matchesSearch && matchesTab;
   });
 
-
-
-
   const handleDelete = (name, size) => {
     setOrderItems((prev) =>
-      prev.filter((item) => !(item.name === name && item.size === size))
+      prev
+        .map((item) => {
+          if (item.name === name && item.size === size) {
+           
+            const newQty = item.qty - 1;
+
+            if (newQty <= 0) return null;
+
+            return {
+              ...item,
+              qty: newQty,
+              total: newQty * item.unitPrice,
+            };
+          }
+          return item;
+        })
+        .filter(Boolean) // removes null items
     );
-
-
   };
+
 
 
   const handleAdd = (dish) => {
@@ -287,8 +299,7 @@ function Home() {
 
 
           <div className=" overflow-y-auto h-145 pb-12 hide-scrollbar">
-            <div className="mt-6">
-              <div className="flex justify-between items-center mb-4">
+              <div className="flex sticky top-0 justify-between items-center mb-4 bg-gray-800 py-4">
                 <h1 className="text-xl head">Choose Dishes</h1>
                 <div className="flex justify-center gap-5">
                   <div className="relative">
@@ -403,7 +414,7 @@ function Home() {
                   </div>
                 ))}
               </div>
-            </div>
+            
           </div>
 
         </div>

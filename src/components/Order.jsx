@@ -85,20 +85,14 @@
 
 
 import React from "react";
-import { useState } from "react";
 import { Trash } from "lucide-react";
 import { Minimize2 } from 'lucide-react';
-
-
-
 
 const mode = [
   { id: 1, name: "Dine In" },
   { id: 2, name: "Take Away" },
   { id: 3, name: "Delivery" },
 ]
-
-
 
 function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, }) {
 
@@ -107,7 +101,7 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
     const price = item.unitPrice || 0;
     return sum + qty * price;
   }, 0);
-   const discountRate = 0.05; // 5%
+  const discountRate = 0.05; // 5%
   const discountAmount = subTotal * discountRate;
   const finalTotal = subTotal - discountAmount;
 
@@ -134,7 +128,7 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
 
       <div className="flex justify-between font-bold mb-2 mt-3 pr-2">
         <p>Item</p>
-        <div className="flex gap-11">
+        <div className="flex gap-27">
           <p>Qty</p>
           <p>Price</p>
         </div>
@@ -155,28 +149,40 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
         {items.map((item, i) => (
           <div key={i} className="mb-4">
             <div className="flex justify-between items-center">
-              <div className="flex items-center gap-3">
+              <div className="flex items-start gap-3">
+                {/* Image stays as-is */}
                 <img src={item.img} className="w-12 h-12 rounded-full" />
-                <div>
-                  <p className="font-semibold">
-                    {item.name}
-                    <span className="ml-2 text-xs bg-gray-700 px-2 py-1 rounded">
+
+                {/* Name + price column */}
+                <div className="flex flex-col max-w-40">
+                  <div className="flex items-center gap-2">
+                    <p
+                      className="font-semibold truncate"
+                      title={item.name}
+                    >
+                      {item.name}
+                    </p>
+
+                    <span className="text-xs bg-gray-700 px-2 py-1 rounded shrink-0">
                       {item.size}
                     </span>
-                  </p>
+                  </div>
 
+                  {/* ✅ Unit price BELOW name */}
                   <p className="text-gray-400 text-sm">
                     {item.unitPrice.toFixed(2)} AED
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-6">
-                <span className="bg-gray-700 px-3 py-1 rounded-lg">
+
+
+              <div className="flex  justify-center">
+                <span className="bg-gray-700 min-w-11 text-center px-3 py-1 rounded-lg">
                   {item.qty}
                 </span>
-                <p>{item.total.toFixed(2)} AED</p>
               </div>
+              <p>{item.total.toFixed(2)} AED</p>
             </div>
 
             <div className="flex gap-3 mt-4">
@@ -216,7 +222,7 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
         >
           Order now
         </button>
-        
+
       </div>
     </div >
   );
