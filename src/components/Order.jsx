@@ -126,13 +126,12 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
         ))}
       </div>
 
-      <div className="flex justify-between font-bold mb-2 mt-3 pr-2">
+      <div className="grid grid-cols-[1fr_70px_120px] font-bold mb-2 mt-3 pr-4">
         <p>Item</p>
-        <div className="flex gap-27">
-          <p>Qty</p>
-          <p>Price</p>
-        </div>
+        <p className="text-center">Qty</p>
+        <p className="text-right">Price</p>
       </div>
+
 
       <div className="border-b border-gray-700 mb-4"></div>
 
@@ -148,18 +147,14 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
 
         {items.map((item, i) => (
           <div key={i} className="mb-4">
-            <div className="flex justify-between items-center">
+            <div className="grid grid-cols-[1fr_70px_120px] items-start gap-4">
+              {/* ITEM COLUMN */}
               <div className="flex items-start gap-3">
-                {/* Image stays as-is */}
-                <img src={item.img} className="w-12 h-12 rounded-full" />
+                <img src={item.img} className="w-12 h-12 rounded-full shrink-0" />
 
-                {/* Name + price column */}
                 <div className="flex flex-col max-w-40">
                   <div className="flex items-center gap-2">
-                    <p
-                      className="font-semibold truncate"
-                      title={item.name}
-                    >
+                    <p className="font-semibold truncate" title={item.name}>
                       {item.name}
                     </p>
 
@@ -168,22 +163,25 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
                     </span>
                   </div>
 
-                  {/* ✅ Unit price BELOW name */}
                   <p className="text-gray-400 text-sm">
                     {item.unitPrice.toFixed(2)} AED
                   </p>
                 </div>
               </div>
 
-
-
-              <div className="flex  justify-center">
+              {/* QTY COLUMN (FIXED WIDTH) */}
+              <div className="flex justify-center">
                 <span className="bg-gray-700 min-w-11 text-center px-3 py-1 rounded-lg">
                   {item.qty}
                 </span>
               </div>
-              <p>{item.total.toFixed(2)} AED</p>
+
+              {/* PRICE COLUMN (FIXED WIDTH) */}
+              <div className="text-right font-medium tabular-nums">
+                {item.total.toFixed(2)} AED
+              </div>
             </div>
+
 
             <div className="flex gap-3 mt-4">
               <input
