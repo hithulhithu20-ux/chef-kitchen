@@ -126,14 +126,13 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
         ))}
       </div>
 
-      <div className="grid grid-cols-[1fr_52px_90px] sm:grid-cols-[1fr_70px_120px] 
-                font-bold mb-2 mt-3 pr-2">
-  <p>Item</p>
-  <p className="text-center">Qty</p>
-  <p className="text-right">Price</p>
-</div>
-
-
+      <div className="flex justify-between font-bold mb-2 mt-3 pr-2">
+        <p>Item</p>
+        <div className="flex gap-13">
+          <p>Qty</p>
+          <p>Price</p>
+        </div>
+      </div>
 
       <div className="border-b border-gray-700 mb-4"></div>
 
@@ -149,42 +148,42 @@ function Order({ items, orderType, setOrderType, onDelete, onRemove, onOrder, })
 
         {items.map((item, i) => (
           <div key={i} className="mb-4">
-            <div className="grid grid-cols-[1fr_52px_90px] sm:grid-cols-[1fr_70px_120px] 
-                items-start gap-3 sm:gap-4">
+            <div className="flex justify-between items-start">
+              {/* LEFT SIDE */}
+              <div className="flex items-start gap-3 min-w-0">
+                <img
+                  src={item.img}
+                  className="w-10 h-10 rounded-full shrink-0"
+                />
 
-              {/* ITEM COLUMN */}
-              <div className="flex items-start gap-3">
-                <img src={item.img} className="w-12 h-12 rounded-full shrink-0" />
+                <div className="flex flex-col min-w-0 max-w-[140px] sm:max-w-[200px]">
+                  {/* NAME */}
+                  <p
+                    className="font-semibold truncate"
+                    title={item.name}
+                  >
+                    {item.name}
+                  </p>
 
-                <div className="flex flex-col max-w-40">
-                  <div className="flex items-center gap-2">
-                    <p className="font-semibold truncate" title={item.name}>
-                      {item.name}
-                    </p>
-
-                    <span className="text-xs bg-gray-700 px-2 py-1 rounded shrink-0">
+                  {/* UNIT PRICE + SIZE */}
+                  <div className="flex items-center gap-2 text-gray-400 text-sm">
+                    <span>{item.unitPrice.toFixed(2)} AED</span>
+                    <span className="text-xs bg-gray-700 px-2 py-0.5 rounded">
                       {item.size}
                     </span>
                   </div>
-
-                  <p className="text-gray-400 text-sm">
-                    {item.unitPrice.toFixed(2)} AED
-                  </p>
                 </div>
               </div>
 
-              {/* QTY COLUMN (FIXED WIDTH) */}
-              <div className="flex justify-center">
-                <span className="bg-gray-700 min-w-10 sm:min-w-11 
-                 text-center px-2 sm:px-3 py-1 rounded-lg">
-  {item.qty}
-</span>
+              {/* RIGHT SIDE */}
+              <div className="flex items-center gap-4">
+                <span className="bg-gray-700 min-w-9 text-center px-2 py-1 rounded-lg">
+                  {item.qty}
+                </span>
 
-              </div>
-
-              {/* PRICE COLUMN (FIXED WIDTH) */}
-              <div className="text-right font-medium tabular-nums">
-                {item.total.toFixed(2)} AED
+                <p className="text-right font-medium tabular-nums min-w-[72px]">
+                  {item.total.toFixed(2)} AED
+                </p>
               </div>
             </div>
 
