@@ -1,36 +1,40 @@
 import React from "react";
-import { useState } from "react";
 import { X, CircleCheckBig } from "lucide-react";
+import { OrderContext } from "../context/OrderContext";
+import { useContext } from "react";
 
+function Receipt() {
+  const {
+    orderItems,
+    orderType,
+    onClose,
+    today,
+    clearOrder,
+    isCompleted,
+    setIsCompleted,
 
-function Receipt({ items, orderType, onClose, today, onClearOrder }) {
-  const subTotal = items.reduce((sum, item) => {
+  } = useContext(OrderContext);
+
+  const subTotal = orderItems.reduce((sum, item) => {
     const qty = item.qty || 1;
     const price = item.unitPrice || 0;
     return sum + qty * price;
   }, 0);
 
-  const [isCompleted, setIsCompleted] = useState(false);
-
-
-  const discountRate = 0.05; // 5%
+  const discountRate = 0.05;
   const discountAmount = subTotal * discountRate;
   const deliveryCharge = orderType === "Delivery" ? 10 : 0;
   const finalTotal = subTotal - discountAmount + deliveryCharge;
 
-
-
   return (
     <>
-
-
       <div className="fixed inset-0 z-50 flex items-center justify-center p">
         <div className="absolute inset-0 bg-black/70" onClick={onClose}></div>
 
         <div className="relative rounded-2xl shadow-xl flex flex-col w-full max-w-[380px] h-[90vh] max-h-[600px]">
 
           {isCompleted ? (
-           
+
             <div className="flex flex-col items-center justify-center h-full text-center p-6">
               <CircleCheckBig className="w-20 h-20 text-green-500 mb-4" />
               <h2 className="text-2xl font-bold mb-2">Order Completed</h2>
@@ -41,7 +45,7 @@ function Receipt({ items, orderType, onClose, today, onClearOrder }) {
               <button
                 onClick={() => {
                   onClose();
-                  onClearOrder();;
+                  clearOrder();;
                 }}
                 className="bg-amber-500 text-white px-6 py-2 rounded-lg font-semibold"
               >
@@ -71,11 +75,9 @@ function Receipt({ items, orderType, onClose, today, onClearOrder }) {
 
                   <div className="border-t border-dashed"></div>
                 </div>
+                <div className="flex-1 overflow-y-auto hide-scrollbar px-6 space-y-4 mb-4">
 
-
-                <div className="flex-1 overflow-y-auto px-6 space-y-4">
-
-                  {items.map((item, i) => {
+                  {orderItems.map((item, i) => {
                     const qty = item.qty || 1;
                     const price = item.unitPrice || 0;
 
@@ -139,7 +141,6 @@ function Receipt({ items, orderType, onClose, today, onClearOrder }) {
               </div>
             </>
           )}
-
         </div>
       </div>
     </>
@@ -147,89 +148,3 @@ function Receipt({ items, orderType, onClose, today, onClearOrder }) {
 }
 
 export default Receipt;
-
-
-
-
-// import React from "react";
-// import { X } from "lucide-react";
-
-// function Receipt({ items, orderType, onClose, }) {
-//   const subTotal = items.reduce(
-//   (sum, item) => sum + item.qty * item.unitPrice,
-//   0
-// );
-
-
-//   return (
-//     <div className="fixed inset-0 z-50 flex items-center justify-center">
-//       {/* Overlay */}
-//       <div
-//         className="absolute inset-0 bg-black/70"
-//         onClick={onClose}
-//       ></div>
-
-//       {/* Receipt Card */}
-//       <div className="relative bg-white w-[380px] rounded-2xl p-6 shadow-xl">
-//         <button
-//           onClick={onClose}
-//           className="absolute top-3 right-3 text-gray-500"
-//         >
-//           <X />
-//         </button>
-
-//         <h1 className="text-2xl font-bold text-center mb-1">
-//           Chef Kitchen
-//         </h1>
-//         <p className="text-center text-sm text-gray-500 mb-4">
-//           {orderType} • Order #34562
-//         </p>
-
-//         <div className="border-t border-dashed my-3"></div>
-
-//         {/* EMPTY ORDER */}
-//         {items.length === 0 ? (
-//           <p className="text-center text-gray-500 py-10">
-//             No items in the order
-//           </p>
-//         ) : (
-//           <>
-//             {/* Items */}
-//             <div className="space-y-3 max-h-60 overflow-y-auto">
-//               {items.map((item, i) => (
-//                 <div key={i} className="flex justify-between text-sm">
-//                   <div>
-//                     <p className="font-medium">
-//                       {item.name}
-//                       <span className="ml-2 text-xs text-gray-500">
-//                         ({item.size})
-//                       </span>
-//                     </p>
-//                     <p className="text-gray-400">
-//                       {item.qty} × {item.unitPrice} AED
-//                     </p>
-//                   </div>
-//                   <p>{(item.qty * item.unitPrice).toFixed(2)} AED</p>
-//                 </div>
-//               ))}
-//             </div>
-
-//             <div className="border-t border-dashed my-4"></div>
-
-//             {/* Total */}
-//             <div className="flex justify-between font-bold text-lg">
-//               <span>Total</span>
-//               <span>{subTotal.toFixed(2)} AED</span>
-//             </div>
-//           </>
-//         )}
-
-//         <p className="text-center text-xs text-gray-400 mt-6">
-//           Thank you for your order ❤️
-//         </p>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Receipt;
