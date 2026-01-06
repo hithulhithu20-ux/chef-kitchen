@@ -150,13 +150,14 @@ function Home() {
         </div>
 
         <div className={`px-6 transition-all duration-300 ${showOrder ? "w-full lg:w-[65%]" : "w-full"}`}>
-  
+          <div>
             <Header/>
-          
-            <Menu/>
-         
+          </div>
+          <div>
+            <Menu />
+          </div>
 
-        
+        </div>
         {showOrder && (
           <div className="w-full lg:w-[35%]  ">
             <Order/>
@@ -167,7 +168,7 @@ function Home() {
 
           </div>
         )}
-</div>
+
       </div>
     </div>
   );
