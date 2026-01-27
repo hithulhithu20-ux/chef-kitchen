@@ -8,6 +8,7 @@ export default function Category() {
     setCategories,
     showAddCategory,
     setShowAddCategory,
+    products,
     setEditCategory,
   } = useContext(DashBoardContext);
 
@@ -16,6 +17,20 @@ export default function Category() {
       prev.filter((_, index) => index !== indexToDelete)
     );
   };
+
+  const getProductCount = (categoryName) => {
+    return products.filter(
+      (product) => product.category === categoryName
+    ).length;
+  };
+
+  const getCategoryStock = (categoryName) => {
+  return products
+    .filter(p => p.category === categoryName)
+    .reduce((sum, p) => sum + Number(p.stock), 0);
+};
+
+
 
   return (
     <div className="flex flex-col gap-4">
@@ -50,8 +65,10 @@ export default function Category() {
               className="grid grid-cols-4 px-6 py-4 text-sm text-gray-700 border-t items-center hover:bg-gray-50"
             >
               <span>{item.name}</span>
-              <span>{item.categoryProducts}</span>
-              <span>{item.stock}</span>
+              <span>{getProductCount(item.name)}</span>
+
+              <span>{getCategoryStock(item.name)}</span>
+
 
               <div className="flex justify-center gap-2">
                 <button
@@ -90,9 +107,10 @@ export default function Category() {
               <div>
                 <h2 className="font-semibold text-lg">{item.name}</h2>
                 <p className="text-sm text-gray-500">
-                  Products: {item.categoryProducts}
+                  Products: {getProductCount(item.name)}
                 </p>
-                <p className="text-sm">Stock: {item.stock}</p>
+
+                <p className="text-sm">Stock: {getCategoryStock(item.name)}</p>
               </div>
 
               <div className="flex gap-2 mt-2">

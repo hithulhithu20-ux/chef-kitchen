@@ -14,17 +14,20 @@ export default function MenuBar({ close }) {
       <h2 className="flex justify-between items-center text-2xl px-3 py-6">Chef Kitchen </h2>
       <div className="flex w-full flex-col text-xl">
 
-        <NavLink end={true} to='/admin' className={({ isActive }) => `flex h-12 w-full px-3 gap-2 items-center hover:bg-gray-500 cursor-pointer ${isActive && "bg-gray-500 border-r-4 border-primary"}`}>
+        <NavLink end={true} to='/admin'
+        onClick={close} className={({ isActive }) => `flex h-12 w-full px-3 gap-2 items-center hover:bg-gray-500 cursor-pointer ${isActive && "bg-gray-500 border-r-4 border-primary"}`}>
           <Shapes />
           <p>category</p>
         </NavLink>
 
-        <NavLink to='/admin/products' className={({ isActive }) => `flex h-12 w-full px-3 gap-2 items-center hover:bg-gray-500 cursor-pointer ${isActive && "bg-gray-500 border-r-4 border-primary"}`}>
+        <NavLink to='/admin/products'
+        onClick={close} className={({ isActive }) => `flex h-12 w-full px-3 gap-2 items-center hover:bg-gray-500 cursor-pointer ${isActive && "bg-gray-500 border-r-4 border-primary"}`}>
           <StretchHorizontal />
           <p>products</p>
         </NavLink>
 
-        <NavLink to='/admin/orders' className={({ isActive }) => `flex h-12 w-full px-3 gap-2 items-center hover:bg-gray-500 cursor-pointer ${isActive && "bg-gray-500 border-r-4 border-primary"}`}>
+        <NavLink to='/admin/orders'
+        onClick={close} className={({ isActive }) => `flex h-12 w-full px-3 gap-2 items-center hover:bg-gray-500 cursor-pointer ${isActive && "bg-gray-500 border-r-4 border-primary"}`}>
           <ShoppingCart />
           <p>orders</p>
         </NavLink>

@@ -17,13 +17,7 @@ export default function AddProducts() {
         const selectedCategory = e.target.value;
         setCategory(selectedCategory);
 
-        const found = storecategories.find(
-            (item) => item.name === selectedCategory
-        );
-
-        if (found) {
-            setStock(found.stock.toString()); // 🔥 overwrite stock
-        }
+        
     };
 
     const availableSizes = ["S", "M", "L"]

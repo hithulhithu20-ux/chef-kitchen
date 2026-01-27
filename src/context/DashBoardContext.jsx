@@ -15,7 +15,11 @@ export function DashBoardProvider({ children }) {
   });
   const [name, setName] = useState('')
   const [stock, setStock] = useState('')
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState(() => {
+    const stored = localStorage.getItem("products");
+    return stored ? JSON.parse(stored) : [];
+  });
+
   const [categoryProducts, setCategoryProducts] = useState("");
   const [showAddProducts, setShowAddProducts] = useState(false)
   const [editProduct, setEditProduct] = useState(null)
@@ -45,7 +49,7 @@ export function DashBoardProvider({ children }) {
 
   const onAdd = (product) => {
     isEdit ? handleUpdateProduct(product) : handleAddProduct(product);
-      resetProductForm()
+    resetProductForm()
 
   };
 
@@ -87,6 +91,11 @@ export function DashBoardProvider({ children }) {
     setSizes([])
     setOrderType([])
   }
+
+
+  useEffect(() => {
+  localStorage.setItem("products", JSON.stringify(products));
+}, [products]);
 
 
 

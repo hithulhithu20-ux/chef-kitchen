@@ -8,17 +8,6 @@ export default function Products() {
   const { showAddProducts, setShowAddProducts, setEditProduct,
     products, setProducts,onClose } = useContext(DashBoardContext);
 
-  // Load from localStorage
-  useEffect(() => {
-    const stored = localStorage.getItem("products")
-    if (stored) setProducts(JSON.parse(stored))
-  }, [])
-
-  // Save to localStorage
-  useEffect(() => {
-    localStorage.setItem("products", JSON.stringify(products))
-  }, [products]);
-
 
   const handleDelete = (id) => {
     setProducts(prev => prev.filter(p => p.id !== id));
