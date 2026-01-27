@@ -18,3 +18,7 @@
   scrollbar-width: none;    
 }
 
+html,body{
+  overflow-x: hidden;
+}
+

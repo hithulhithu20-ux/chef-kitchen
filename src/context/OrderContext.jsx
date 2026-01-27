@@ -18,6 +18,7 @@ export function OrderProvider({ children }) {
     const clearOrder = () => {
         setOrderItems([]);
         setSelectedSizes([]);
+        setShowOrder(false);
     };
 
     const onOrder = () => {
