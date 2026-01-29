@@ -13,12 +13,12 @@ export default function DashHead() {
 
     return (
         <>
-            <div className="flex items-center justify-between w-full h-20    px-2 ">
+            <div className="flex items-center justify-between w-full h-20  px-2 ">
                 <div className=" h-14 flex items-center gap-3 ">
                     <button className=' md:hidden' onClick={onShow}>
                         <Menu />
                     </button>
-                    <h1 className="head text-2xl">Dashboard</h1>
+                    <h1 className="head text-3xl lobster-two-bold">Dashboard</h1>
                 </div>
 
 

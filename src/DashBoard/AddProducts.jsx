@@ -15,9 +15,7 @@ export default function AddProducts() {
 
     const handleCategoryChange = (e) => {
         const selectedCategory = e.target.value;
-        setCategory(selectedCategory);
-
-        
+        setCategory(selectedCategory);       
     };
 
     const availableSizes = ["S", "M", "L"]
@@ -64,7 +62,6 @@ export default function AddProducts() {
         );
     };
 
-
     const handleImageUpload = (e) => {
         const file = e.target.files[0]
         if (!file) return
@@ -86,8 +83,6 @@ export default function AddProducts() {
         if (!name || !category || !stock || !image || orderType.length === 0 || sizes.length === 0 || sizes.some(s => !s.price)) {
             return alert("Fill all fields");
         }
-
-
         onAdd({
             id: isEdit ? initialData.id : Date.now(),
             image,
@@ -106,13 +101,11 @@ export default function AddProducts() {
                 <h2 className="text-xl font-bold">
                     {isEdit ? "Edit Product" : "Add Product"}
                 </h2>
-
                 {/* Image Upload */}
                 <div>
                     <label className="text-sm font-medium mb-1 block">
                         Product Image
                     </label>
-
                     <div
                         onClick={() => document.getElementById("productImage").click()}
                         className="w-24 h-24 border-2 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-50 overflow-hidden">
@@ -192,7 +185,6 @@ export default function AddProducts() {
                         </div>
                     ))}
                 </div>
-
                 {/* Order Type (Multiple) */}
                 <div>
                     <p className="text-sm font-medium mb-1">Order Type</p>

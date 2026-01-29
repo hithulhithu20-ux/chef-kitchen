@@ -29,7 +29,7 @@ function Receipt() {
   return (
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center p">
-        <div className="absolute inset-0 bg-black/70" onClick={onClose}></div>
+        <div className="absolute inset-0 bg-black/70"></div>
 
         <div className="relative rounded-2xl shadow-xl flex flex-col w-full max-w-[380px] h-[90vh] max-h-[600px]">
 

@@ -4,6 +4,7 @@ import { ShoppingCart } from 'lucide-react';
 import { OrderContext } from '../context/OrderContext';
 import { useContext } from 'react';
 
+
 export default function Menu() {
     const {
         filteredDishes,
@@ -75,7 +76,7 @@ export default function Menu() {
                         <div
                             key={index}
                             className="bg-gray-900 rounded-3xl p-4 flex flex-col items-center">
-                            <img src={item.img} className="w-28 h-28 rounded-full object-cover -mt-12 mb-4" />
+                            <img src={item.image} className="w-28 h-28 rounded-full object-cover -mt-12 mb-4" />
 
                             <p className="text-sm text-center font-semibold">
                                 {item.name}
@@ -101,21 +102,27 @@ export default function Menu() {
                             </p>
                             <div className="flex justify-center gap-2 mt-2">
                                 {item.sizes.map((s, index) => {
-                                    const isSelected = selectedSizes[item.name] === s;
+                                    const isSelected =
+                                        selectedSizes[item.name] === s.size;
 
                                     return (
                                         <button
                                             key={index}
-                                            onClick={() => handleSizeSelect(item.name, s)}
+                                            onClick={() =>
+                                                handleSizeSelect(item.name, s.size)
+                                            }
                                             className={`text-sm px-3 py-1 rounded-md border transition-all
-                            ${isSelected
+          ${isSelected
                                                     ? "bg-amber-500 text-white border-amber-500"
-                                                    : "border-gray-400 text-white hover:bg-gray-700"}`}>
-                                            {s}
+                                                    : "border-gray-400 text-white hover:bg-gray-700"
+                                                }`}
+                                        >
+                                            {s.size} {/* ✅ ONLY STRING */}
                                         </button>
                                     );
                                 })}
                             </div>
+
                             <div className="flex justify-center mt-4">
                                 <button onClick={() => handleAdd(item)}
                                     className={`justify-center text-lg rounded-xl px-10 py-1 transition-all ${isSizeAdded(item.name)

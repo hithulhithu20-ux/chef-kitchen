@@ -1,11 +1,14 @@
-import { createContext, useState } from "react";
-import { dishes, tabs, SIZE_MULTIPLIER } from "../constants";
+import { createContext, useState, useContext,useEffect } from "react";
+import { DashBoardContext } from "./DashBoardContext";
 
 export const OrderContext = createContext();
 
 export function OrderProvider({ children }) {
 
-    const [active, setActive] = useState("today");
+    const { products, categories } = useContext(DashBoardContext); // 🔥 REAL PRODUCTS
+
+    const [active, setActive] = useState("");
+ const [orders, setOrders] = useState([]);
     const [orderItems, setOrderItems] = useState([]);
     const [showOrder, setShowOrder] = useState(false);
     const [search, setSearch] = useState("");
@@ -15,40 +18,90 @@ export function OrderProvider({ children }) {
     const [showReceipt, setShowReceipt] = useState(false);
     const [isCompleted, setIsCompleted] = useState(false);
 
+    useEffect(() => {
+    const storedOrders = localStorage.getItem("orders");
+    if (storedOrders) {
+        setOrders(JSON.parse(storedOrders));
+    }
+}, []);
+
+
+useEffect(() => {
+    localStorage.setItem("orders", JSON.stringify(orders));
+}, [orders]);
+
+
+    useEffect(() => {
+        if (!active && categories.length > 0) {
+            setActive(categories[0].name);
+        }
+    }, [categories]);
+
+
     const clearOrder = () => {
         setOrderItems([]);
         setSelectedSizes([]);
         setShowOrder(false);
     };
 
-    const onOrder = () => {
-        setIsCompleted(false)
-        setShowReceipt(true)
-    }
+   const onOrder = () => {
+    if (orderItems.length === 0) return;
+
+    
+
+
+ 
+    
+    const newOrder = {
+  id: Date.now(),
+  orderNo: `ORD-${orders.length + 1}`,
+  orderType,
+  createdAt: new Date().toLocaleString(),
+  subTotal: orderItems.reduce((sum, i) => sum + i.total, 0),
+
+  items: orderItems, // ✅ keep item-specific type
+
+};
+
+
+    setOrders(prev => [...prev, newOrder]); // ✅ SAVE ORDER
+    setIsCompleted(false);
+    setShowReceipt(true);
+};
+
 
     const onRemove = () => {
         setShowOrder(false)
 
     }
     const onClose = () => {
-        setShowReceipt(false)
-    }
+    setShowReceipt(false);
+    clearOrder(); // ✅ empty cart AFTER receipt
+};
 
 
-    const handleAdd = (dish) => {
+
+    const handleAdd = (product) => {
+        const selectedSize =
+            selectedSizes[product.name] || product.sizes[0].size;
+
+        const sizeObj = product.sizes.find(
+            (s) => s.size === selectedSize
+        );
+
+        const price = Number(sizeObj.price); // ✅ FORCE NUMBER
 
 
-        const size = selectedSizes[dish.name] || "S";
-        const multiplier = SIZE_MULTIPLIER[size];
-        const finalPrice = dish.priceValue * multiplier;
         setOrderItems((prev) => {
             const existing = prev.find(
-                (item) => item.name === dish.name && item.size === size
+                (item) =>
+                    item.name === product.name &&
+                    item.size === selectedSize
             );
 
             if (existing) {
-                return prev.map(item =>
-                    item.name === dish.name && item.size === size
+                return prev.map((item) =>
+                    item.name === product.name && item.size === selectedSize
                         ? {
                             ...item,
                             qty: item.qty + 1,
@@ -61,39 +114,47 @@ export function OrderProvider({ children }) {
             return [
                 ...prev,
                 {
-                    img: dish.img,
-                    name: dish.name,
-                    size: size,
-                    unitPrice: finalPrice,
+                    img: product.image,
+                    name: product.name,
+                    size: selectedSize,
+                    unitPrice: price,        // ✅ number
                     qty: 1,
-                    total: finalPrice,
+                    total: price,
+                    orderType,            // ✅ number
                 },
             ];
+
         });
-
     };
 
-    const getCalculatedPrice = (dish) => {
-        const size = selectedSizes[dish.name] || "S";
-        const multiplier = SIZE_MULTIPLIER[size];
-        return (dish.priceValue * multiplier).toFixed(2);
+
+    const getCalculatedPrice = (product) => {
+        const selectedSize =
+            selectedSizes[product.name] || product.sizes[0].size;
+
+        const sizeObj = product.sizes.find(
+            (s) => s.size === selectedSize
+        );
+
+        return sizeObj ? sizeObj.price : 0;
     };
 
-    const filteredDishes = dishes.filter((item) => {
-        const matchesSearch = item.name
+
+    const filteredDishes = products.filter((product) => {
+        const matchesSearch = product.name
             .toLowerCase()
-            .includes(search.trim().toLowerCase());
+            .includes(search.toLowerCase());
 
-        const matchesTab =
-            active === "all" ||
-            item.special.includes(
-                tabs.find((tab) => tab.id === active)?.label
-            );
+        const matchesOrderType =
+            product.orderType?.includes(orderType);
 
-        const matchesOrderType = item.available.includes(orderType);
+        const matchesCategory =
+            !active || product.category === active;
 
-        return matchesSearch && matchesTab && matchesOrderType;
+        return matchesSearch && matchesOrderType && matchesCategory;
     });
+
+
 
     const handleDelete = (name, size) => {
         setOrderItems((prev) =>
@@ -129,10 +190,14 @@ export function OrderProvider({ children }) {
         0
     );
 
-    const isSizeAdded = (dishName) => {
-        const size = selectedSizes[dishName] || "S";
+    const isSizeAdded = (productName) => {
+        const size =
+            selectedSizes[productName] ||
+            orderItems.find((i) => i.name === productName)?.size;
+
         return orderItems.some(
-            (item) => item.name === dishName && item.size === size
+            (item) =>
+                item.name === productName && item.size === size
         );
     };
 
@@ -156,6 +221,7 @@ export function OrderProvider({ children }) {
                 setShowReceipt,
                 isCompleted,
                 setIsCompleted,
+                orders,
 
                 orderItems,
                 setOrderItems,

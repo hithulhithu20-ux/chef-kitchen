@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect, useState } from "react"
 import AddProducts from "./AddProducts"
 import { DashBoardContext } from "../context/DashBoardContext";
@@ -15,7 +14,7 @@ export default function Products() {
 
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 lobster-two-bold">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <h1 className="text-2xl sm:text-3xl font-bold">Products</h1>
@@ -33,12 +32,12 @@ export default function Products() {
 
       {/* Desktop Table */}
       <div className="hidden sm:block w-full bg-white rounded-lg shadow-sm overflow-hidden">
-        <div className="grid grid-cols-[60px_1.5fr_1.2fr_80px_2fr_1.5fr_120px] px-6 py-4 bg-gray-300 text-sm font-semibold text-center">
+        <div className="grid grid-cols-[60px_1.5fr_1.2fr_80px_2fr_1.5fr_120px] px-6 py-4 bg-gray-300 text-lg font-semibold text-center">
           <span>Image</span>
           <span>Name</span>
           <span>Category</span>
           <span>Stock</span>
-          <span>Sizes</span>
+          <span>Sizes & Prices</span>
           <span>Order Type</span>
           <span className="text-center">Actions</span>
         </div>
@@ -51,10 +50,10 @@ export default function Products() {
           products.map((p) => (
             <div
               key={p.id}
-              className="grid grid-cols-[60px_1.5fr_1.2fr_80px_2fr_1.5fr_120px] px-6 py-4 text-sm text-gray-700 border-t items-center hover:bg-gray-50 text-center">
+              className="grid grid-cols-[60px_1.5fr_1.2fr_80px_2fr_1.5fr_120px] px-6 py-4 text-md text-gray-700 border-t items-center hover:bg-gray-50 text-center">
               <img
                 src={p.image}
-                className="w-10 h-10 rounded object-cover border" />
+                className="w-10 h-10 rounded object-cover" />
 
               <span>{p.name}</span>
               <span>{p.category}</span>

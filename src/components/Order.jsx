@@ -14,9 +14,6 @@ function Order() {
     orderType,
     setOrderType,
     handleDelete,
-    setShowOrder,
-    setShowReceipt,
-    setIsCompleted,
   } = useContext(OrderContext);
 
   const subTotal = orderItems.reduce((sum, item) => {

@@ -1,8 +1,9 @@
 import React from "react";
-import { tabs, today, dishes } from "../constants/index";
+import { today,  } from "../constants/index";
 import { Search } from "lucide-react";
 import { OrderContext } from "../context/OrderContext";
 import { useContext } from "react";
+import { DashBoardContext } from "../context/DashBoardContext";
 
 
 export default function Header() {
@@ -12,6 +13,8 @@ export default function Header() {
     active,
     setActive,
   } = useContext(OrderContext);
+
+    const { categories } = useContext(DashBoardContext);
 
   return (
     <div>
@@ -33,17 +36,20 @@ export default function Header() {
         </div>
       </div>
 
-      <div className="flex gap-6 mt-4 px-2 border-b border-gray-600">
-        {tabs.map((tab) => (
+       <div className="flex gap-6 mt-4 px-2 border-b border-gray-600 overflow-x-auto">
+        {categories.map((cat) => (
           <button
-            key={tab.id}
-            onClick={() => setActive(tab.id)}
-            className={`relative pb-3 transition-all ${active === tab.id ? "text-orange-400" : "text-white"
-              }`}
+            key={cat.name}
+            onClick={() => setActive(cat.name)}
+            className={`relative pb-3 whitespace-nowrap ${
+              active === cat.name
+                ? "text-orange-400"
+                : "text-white"
+            }`}
           >
-            {tab.label}
+            {cat.name}
 
-            {active === tab.id && (
+            {active === cat.name && (
               <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-6 h-[3px] bg-orange-400 rounded-full" />
             )}
           </button>

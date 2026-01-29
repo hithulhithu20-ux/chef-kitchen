@@ -4,12 +4,7 @@ import { DashBoardContext } from "../context/DashBoardContext";
 
 export default function Category() {
   const {
-    categories,
-    setCategories,
-    showAddCategory,
-    setShowAddCategory,
-    products,
-    setEditCategory,
+    categories, setCategories, showAddCategory, setShowAddCategory, products, setEditCategory,
   } = useContext(DashBoardContext);
 
   const handleDeleteCategory = (indexToDelete) => {
@@ -33,7 +28,7 @@ export default function Category() {
 
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 lobster-two-bold">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <h1 className="text-2xl sm:text-3xl font-bold">Category</h1>
@@ -47,7 +42,7 @@ export default function Category() {
 
       {/* ===== Desktop Table ===== */}
       <div className="hidden sm:block w-full bg-white rounded-lg shadow-sm overflow-hidden">
-        <div className="grid grid-cols-4 px-6 py-4 bg-gray-300 text-sm font-semibold">
+        <div className="grid grid-cols-4 px-6 py-4 bg-gray-300 text-lg font-semibold">
           <span>Name</span>
           <span>Products</span>
           <span>Stock</span>
@@ -62,7 +57,7 @@ export default function Category() {
           categories.map((item, index) => (
             <div
               key={index}
-              className="grid grid-cols-4 px-6 py-4 text-sm text-gray-700 border-t items-center hover:bg-gray-50"
+              className="grid grid-cols-4 px-6 py-4 text-md text-gray-700 border-t items-center hover:bg-gray-50"
             >
               <span>{item.name}</span>
               <span>{getProductCount(item.name)}</span>
