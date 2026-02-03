@@ -94,8 +94,8 @@ export function DashBoardProvider({ children }) {
 
 
   useEffect(() => {
-  localStorage.setItem("products", JSON.stringify(products));
-}, [products]);
+    localStorage.setItem("products", JSON.stringify(products));
+  }, [products]);
 
 
 

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Shapes, ShoppingCart, StretchHorizontal, LogOut, ArrowLeftFromLine } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { OrderContext } from "../context/OrderContext";
 
 export default function MenuBar({ close }) {
+  const { setLogin } = useContext(OrderContext) 
+  const navigate = useNavigate()
   return (
     <div className="relative flex w-60 h-screen bg-gray-300 text-black flex-col space-y-8 lobster-two-bold ">
       <button
@@ -33,7 +36,7 @@ export default function MenuBar({ close }) {
         </NavLink>
 
         <div className=" flex absolute bottom-5 px-4 gap-3 items-center">
-          <LogOut /> Log out
+          <LogOut onClick={()=>{navigate('/');setLogin(false)}}/> Log out
         </div>
       </div>
 

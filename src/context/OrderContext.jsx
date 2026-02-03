@@ -1,4 +1,4 @@
-import { createContext, useState, useContext,useEffect } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { DashBoardContext } from "./DashBoardContext";
 
 export const OrderContext = createContext();
@@ -8,7 +8,7 @@ export function OrderProvider({ children }) {
     const { products, categories } = useContext(DashBoardContext); // 🔥 REAL PRODUCTS
 
     const [active, setActive] = useState("");
- const [orders, setOrders] = useState([]);
+    const [orders, setOrders] = useState([]);
     const [orderItems, setOrderItems] = useState([]);
     const [showOrder, setShowOrder] = useState(false);
     const [search, setSearch] = useState("");
@@ -17,18 +17,26 @@ export function OrderProvider({ children }) {
     const [selectedSizes, setSelectedSizes] = useState({});
     const [showReceipt, setShowReceipt] = useState(false);
     const [isCompleted, setIsCompleted] = useState(false);
+    const [showPayment, setShowPayment] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState("");
+    const [login, setLogin] = useState(false);
+    const [customerName, setCustomerName] = useState("");
+
+
+
+
 
     useEffect(() => {
-    const storedOrders = localStorage.getItem("orders");
-    if (storedOrders) {
-        setOrders(JSON.parse(storedOrders));
-    }
-}, []);
+        const storedOrders = localStorage.getItem("orders");
+        if (storedOrders) {
+            setOrders(JSON.parse(storedOrders));
+        }
+    }, []);
 
 
-useEffect(() => {
-    localStorage.setItem("orders", JSON.stringify(orders));
-}, [orders]);
+    useEffect(() => {
+        localStorage.setItem("orders", JSON.stringify(orders));
+    }, [orders]);
 
 
     useEffect(() => {
@@ -44,30 +52,23 @@ useEffect(() => {
         setShowOrder(false);
     };
 
-   const onOrder = () => {
-    if (orderItems.length === 0) return;
+    const onOrder = () => {
+        if (orderItems.length === 0) return;
 
-    
+        const newOrder = {
+            id: Date.now(),
+            customerName,
+            orderType,
+            paymentMethod,
+            createdAt: new Date().toLocaleString(),
+            subTotal: orderItems.reduce((sum, i) => sum + i.total, 0),
+            items: orderItems,
+        };
 
-
- 
-    
-    const newOrder = {
-  id: Date.now(),
-  orderNo: `ORD-${orders.length + 1}`,
-  orderType,
-  createdAt: new Date().toLocaleString(),
-  subTotal: orderItems.reduce((sum, i) => sum + i.total, 0),
-
-  items: orderItems, // ✅ keep item-specific type
-
-};
+        setOrders(prev => [...prev, newOrder]);
+    };
 
 
-    setOrders(prev => [...prev, newOrder]); // ✅ SAVE ORDER
-    setIsCompleted(false);
-    setShowReceipt(true);
-};
 
 
     const onRemove = () => {
@@ -75,9 +76,14 @@ useEffect(() => {
 
     }
     const onClose = () => {
-    setShowReceipt(false);
-    clearOrder(); // ✅ empty cart AFTER receipt
-};
+        setShowReceipt(false);
+        setShowPayment(false);
+        setIsCompleted(false);
+        setPaymentMethod(""); // ✅ reset
+        clearOrder();
+    };
+
+
 
 
 
@@ -222,6 +228,11 @@ useEffect(() => {
                 isCompleted,
                 setIsCompleted,
                 orders,
+                showPayment, setShowPayment,
+                paymentMethod,
+                setPaymentMethod,
+                login, setLogin,
+                customerName, setCustomerName,
 
                 orderItems,
                 setOrderItems,

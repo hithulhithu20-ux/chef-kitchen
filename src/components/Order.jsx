@@ -14,6 +14,7 @@ function Order() {
     orderType,
     setOrderType,
     handleDelete,
+    setShowReceipt,
   } = useContext(OrderContext);
 
   const subTotal = orderItems.reduce((sum, item) => {
@@ -121,7 +122,7 @@ function Order() {
         </div>
         <button
           disabled={Array.isArray(orderItems) && orderItems.length === 0}
-          onClick={onOrder}
+           onClick={() => setShowReceipt(true)}
           className={`w-full py-3 rounded-xl text-lg font-semibold 
   ${orderItems.length === 0
               ? "bg-gray-600 cursor-not-allowed"

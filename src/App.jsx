@@ -8,6 +8,7 @@ import Category from './DashBoard/Category'
 import Products from './DashBoard/Products'
 
 import Orders from './DashBoard/Orders'
+import LoginPage from './pages/LoginPage'
 
 
 function App() {
@@ -17,7 +18,9 @@ function App() {
     <>
       <div className='flex h-full w-full '>
         <Routes>
+
           <Route path='/' element={<Welcome />} />
+          <Route path='/login' element={<LoginPage/>}/>
           <Route path="/home" element={<Home />} />
           <Route path='/receipt' element={<Receipt />} />
           <Route path='/admin' element={<Layout />}>

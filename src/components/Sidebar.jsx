@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.svg'
@@ -6,8 +6,12 @@ import { GrHomeRounded } from "react-icons/gr";
 import { RiHeart3Line } from "react-icons/ri";
 import { IoNotificationsOutline, IoExitOutline, IoMailOutline } from "react-icons/io5";
 import { CiDiscount1 } from "react-icons/ci";
+import { OrderContext } from '../context/OrderContext';
 
 function Sidebar() {
+
+  const {setLogin} = useContext(OrderContext)
+
   const navigate = useNavigate();
   const [active, setActive] = useState("home");
 
@@ -68,7 +72,7 @@ function Sidebar() {
                 </button>
 
               ))}
-              <button onClick={() => navigate("/")} className="w-14 h-14 rounded-2xl flex items-center justify-center
+              <button onClick={() => {navigate("/");setLogin(false)}} className="w-14 h-14 rounded-2xl flex items-center justify-center
                    text-[#F99147] hover:bg-white/10">
                 <IoExitOutline className="text-2xl" />
               </button>
